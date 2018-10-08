@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Table from '../src/Table'
+import Table from '../src'
 
 const columns = [
   {
