@@ -1,13 +1,13 @@
 # @tillhub/react-table-wrapper
 
-> Qui distinctio voluptatum vel accusamus soluta optio vero maxime. Sit quae atque laudantium veritatis animi consectetur minus repudiandae. Ut error illum voluptate tempore at ducimus eius numquam. Quia vel laboriosam nesciunt harum.
+> A wrapper over react-table that abstract stuff like fetching data, pagination, and page size and navigation events. Expects reacieving an SDK for fetching data. The SDK should structure from data type methods the themselves have the methods "getAll" and "count". The wrapper passes other not mentioned props down to the react-table library. Please refer to the react-table documentation to find out what other props are accetped.
 
 ## Install
 
 ```bash
-npm install --save @tillhub/react-table-wrapper
+npm install @tillhub/react-table-wrapper
 ```
 
 ## License
 
-MIT © [erezo](https://github.com/erezo)
+MIT © [erezsob](https://github.com/erezsob)
