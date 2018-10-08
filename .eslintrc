@@ -21,7 +21,7 @@
     "react/jsx-boolean-value": 0,
     "no-unused-vars": 1,
     "prettier/prettier": [
-      "error",
+      "warn",
       {
         "semi": false,
         "singleQuote": true

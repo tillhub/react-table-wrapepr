@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.0.0",
   "description": "A wrapper over react-table, with several abstraction out of the box",
-  "author": "erezso",
+  "author": "erezsob",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 6006",
     "semantic-release": "semantic-release",
-    "precommit": "git add -A",
     "commit": "npm run precommit && git-cz",
     "build-storybook": "build-storybook"
   },
