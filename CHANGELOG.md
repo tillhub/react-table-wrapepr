@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/tillhub/react-table-wrapper/compare/v1.0.0...v1.0.1) (2018-10-08)
+
+
+### Bug Fixes
+
+* **styled-components-build:** handle style-components imports on build ([bed2821](https://github.com/tillhub/react-table-wrapper/commit/bed2821))
+
 # 1.0.0 (2018-10-08)
 
 
