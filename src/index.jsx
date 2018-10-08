@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import 'react-table/react-table.css'
 
-const StyledTable = styled(ReactTable)`
-  width: 100%;
-`
+// const StyledTable = styled(ReactTable)`
+//   width: 100%;
+// `
 
 const DEFAULT_PAGE_SIZE = 20
 
@@ -90,7 +90,7 @@ class Table extends Component {
     const cleanedData = this.ingest(localData)
 
     return (
-      <StyledTable
+      <ReactTable
         data={this.ingest(cleanedData)}
         columns={columns}
         page={page}
