@@ -8,7 +8,45 @@ const sdk = {
   branches: () => ({
     getAll: () =>
       Promise.resolve({
+        count: () =>
+          Promise.resolve({
+            data: [
+              {
+                count: 7
+              }
+            ]
+          }),
         data: [
+          {
+            name: companyName + '_#1',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: companyName,
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: companyName,
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: companyName,
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: companyName,
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
           {
             name: companyName,
             branch_number: '1',
@@ -26,7 +64,7 @@ const sdk = {
                 country: 'Germany'
               }
             ],
-            next: () => ({})
+            next: () => null
           })
       })
   })
@@ -60,7 +98,8 @@ describe.skip('Table', () => {
     const { getByText } = render(
       <Table columns={columns} sdkInstance={sdk} dataType="branches" />
     )
-    const name = await waitForElement(() => getByText(companyName))
+    const name = await waitForElement(() => getByText(companyName + '_#1'))
+    // console.log('name', name)
     // fireEvent.click(next)
   })
 })
