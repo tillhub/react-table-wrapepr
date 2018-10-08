@@ -1,11 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { toast } from 'react-toastify'
 import Table from '../src/Table'
-
-const dispatchError = err => {
-  toast.error(err.message)
-}
 
 const columns = [
   {
@@ -40,10 +35,162 @@ const sdk = {
             branch_number: '1',
             address: 'Manhattan, New York City',
             country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
+          },
+          {
+            name: 'Stark Inc.',
+            branch_number: '1',
+            address: 'Manhattan, New York City',
+            country: 'New York, USA'
           }
         ],
-        next: () =>
-          Promise.resolve({
+        next: Promise.resolve({
+          data: [
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            },
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            },
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            },
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            },
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            },
+            {
+              name: 'Venture Bros. Inc.',
+              branch_number: '1',
+              address: 'Manhattan, New York City',
+              country: 'New York, USA'
+            }
+          ],
+          next: Promise.resolve({
             data: [
               {
                 name: 'Tillhub,',
@@ -52,14 +199,15 @@ const sdk = {
                 country: 'Germany'
               }
             ],
-            next: () => ({})
+            next: null
           })
+        })
       }),
     count: () =>
       Promise.resolve({
         data: [
           {
-            count: 1
+            count: 21
           }
         ]
       })
@@ -68,9 +216,9 @@ const sdk = {
 
 storiesOf('Table', module).add('simple', () => (
   <Table
-    onError={dispatchError}
     sdkInstance={sdk}
     dataType="data"
     columns={columns}
+    defaultPageSize={5}
   />
 ))

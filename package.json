@@ -23,7 +23,7 @@
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 6006",
     "semantic-release": "semantic-release",
-    "commit": "npm run precommit && git-cz",
+    "commit": "git-cz",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {

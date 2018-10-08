@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
 import styled from 'styled-components'
+import 'react-table/react-table.css'
 
 const StyledTable = styled(ReactTable)`
   width: 100%;
