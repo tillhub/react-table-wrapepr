@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 import 'react-table/react-table.css'
 
-// const StyledTable = styled(ReactTable)`
-//   width: 100%;
-// `
+const StyledTable = styled(ReactTable)`
+  width: 100%;
+`
 
 const DEFAULT_PAGE_SIZE = 20
 
@@ -17,7 +17,6 @@ class Table extends Component {
       pageSize: this.props.defaultPageSize,
       totalSize: null
     },
-    isPending: false,
     data: this.props.data,
     next: null
   }
@@ -30,9 +29,7 @@ class Table extends Component {
   getResourcesData = () => {
     this.makeRequest()
       .getAll()
-      .then(res =>
-        this.setState({ data: res.data, next: res.next, isPending: false })
-      )
+      .then(res => this.setState({ data: res.data, next: res.next }))
       .catch(this.props.onError)
   }
 
@@ -44,8 +41,7 @@ class Table extends Component {
           pageOptions: {
             ...pageOptions,
             totalSize: res.data[0].count
-          },
-          isPending: false
+          }
         }))
       )
       .catch(this.props.onError)
@@ -53,7 +49,6 @@ class Table extends Component {
 
   makeRequest = () => {
     const { sdkInstance, dataType } = this.props
-    this.setState({ isPending: true })
     return sdkInstance[dataType]()
   }
 
@@ -83,14 +78,13 @@ class Table extends Component {
     const { data: propsData, columns, ...rest } = this.props // eslint-disable-line no-unused-vars
     const {
       data: localData,
-      isPending,
       pageOptions: { page, pageSize }
     } = this.state
 
     const cleanedData = this.ingest(localData)
 
     return (
-      <ReactTable
+      <StyledTable
         data={this.ingest(cleanedData)}
         columns={columns}
         page={page}
@@ -105,13 +99,11 @@ class Table extends Component {
           const requested = (state.page + 1) * state.pageSize
 
           if (requested >= loaded && this.state.next) {
-            this.setState({ isPending: true })
             this.state.next
               .then(res =>
                 this.setState(({ data }) => ({
                   data: data.concat(res.data),
-                  next: res.next ? res.next : null,
-                  isPending: false
+                  next: res.next ? res.next : null
                 }))
               )
               .catch(this.props.onError)
