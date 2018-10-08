@@ -72,6 +72,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-scripts": "^2.0.4",
     "react-spinners": "^0.4.5",
     "react-table": "^6.8.6",
     "react-test-renderer": "^16.4.2",
