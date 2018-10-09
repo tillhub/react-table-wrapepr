@@ -22,8 +22,10 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    this.getResourcesData()
-    this.getResourcesCount()
+    if (!this.props.data) {
+      this.getResourcesData()
+      this.getResourcesCount()
+    }
   }
 
   getResourcesData = () => {
@@ -127,7 +129,7 @@ Table.propTypes = {
 }
 
 Table.defaultProps = {
-  data: [],
+  data: null,
   totalRows: null,
   sdkInstance: {},
   dataType: '',
