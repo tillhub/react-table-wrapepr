@@ -85,7 +85,7 @@ class Table extends Component {
 
     return (
       <StyledTable
-        data={this.ingest(cleanedData)}
+        data={cleanedData}
         columns={columns}
         page={page}
         pageSize={pageSize}
