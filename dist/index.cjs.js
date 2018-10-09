@@ -2904,9 +2904,5 @@ Table.defaultProps = {
   onError: function onError() {}
 };
 
-Table.contextTypes = {
-  store: PropTypes.object
-};
-
 module.exports = Table;
 //# sourceMappingURL=index.cjs.js.map

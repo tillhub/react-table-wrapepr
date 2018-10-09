@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/tillhub/react-table-wrapper/compare/v1.0.3...v1.0.4) (2018-10-09)
+
+
+### Bug Fixes
+
+* **package.json:** change entry file ([a483e0b](https://github.com/tillhub/react-table-wrapper/commit/a483e0b))
+
 ## [1.0.3](https://github.com/tillhub/react-table-wrapper/compare/v1.0.2...v1.0.3) (2018-10-09)
 
 
