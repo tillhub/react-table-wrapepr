@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/tillhub/react-table-wrapper/compare/v1.0.4...v1.0.5) (2018-10-09)
+
+
+### Bug Fixes
+
+* **table:** prevet fetching data if already provided ([4094704](https://github.com/tillhub/react-table-wrapper/commit/4094704))
+
 ## [1.0.4](https://github.com/tillhub/react-table-wrapper/compare/v1.0.3...v1.0.4) (2018-10-09)
 
 

@@ -2821,8 +2821,10 @@ var Table = function (_Component) {
   createClass(Table, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getResourcesData();
-      this.getResourcesCount();
+      if (!this.props.data) {
+        this.getResourcesData();
+        this.getResourcesCount();
+      }
     }
 
     // remove rows where deleted is true
@@ -2890,7 +2892,7 @@ Table.propTypes = {
 };
 
 Table.defaultProps = {
-  data: [],
+  data: null,
   totalRows: null,
   sdkInstance: {},
   dataType: '',
