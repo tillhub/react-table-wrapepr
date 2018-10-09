@@ -136,8 +136,4 @@ Table.defaultProps = {
   onError: () => {}
 }
 
-Table.contextTypes = {
-  store: PropTypes.object
-}
-
 export default Table
