@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/tillhub/react-table-wrapper/compare/v1.0.2...v1.0.3) (2018-10-09)
+
+
+### Bug Fixes
+
+* **table:** remove redundant transformation ([1a6e553](https://github.com/tillhub/react-table-wrapper/commit/1a6e553))
+
 ## [1.0.2](https://github.com/tillhub/react-table-wrapper/compare/v1.0.1...v1.0.2) (2018-10-08)
 
 
