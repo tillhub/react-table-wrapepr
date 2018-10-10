@@ -17,14 +17,23 @@ class Table extends Component {
       pageSize: this.props.defaultPageSize,
       totalSize: null
     },
-    data: this.props.data,
+    data: [],
     next: null
   }
 
   componentDidMount() {
-    if (!this.props.data) {
-      this.getResourcesData()
-      this.getResourcesCount()
+    this.getResourcesData()
+    this.getResourcesCount()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.deletedItems.length !== this.props.deletedItems.length) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(({ data }) => {
+        return {
+          data: data.filter(item => !this.props.deletedItems.includes(item.id))
+        }
+      })
     }
   }
 
@@ -125,7 +134,8 @@ Table.propTypes = {
   dataType: PropTypes.string,
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
-  onError: PropTypes.func
+  onError: PropTypes.func,
+  deletedItems: PropTypes.array
 }
 
 Table.defaultProps = {
@@ -135,7 +145,8 @@ Table.defaultProps = {
   dataType: '',
   useBarLoader: false,
   defaultPageSize: DEFAULT_PAGE_SIZE,
-  onError: () => {}
+  onError: () => {},
+  deletedItems: []
 }
 
 export default Table
