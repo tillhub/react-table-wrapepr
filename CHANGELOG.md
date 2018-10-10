@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/tillhub/react-table-wrapper/compare/v1.1.0...v1.2.0) (2018-10-10)
+
+
+### Features
+
+* **table:** add updateConsumerState prop ([2263258](https://github.com/tillhub/react-table-wrapper/commit/2263258))
+
 # [1.1.0](https://github.com/tillhub/react-table-wrapper/compare/v1.0.5...v1.1.0) (2018-10-10)
 
 

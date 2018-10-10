@@ -2771,7 +2771,9 @@ var Table = function (_Component) {
       next: null
     }, _this.getResourcesData = function () {
       _this.makeRequest().getAll().then(function (res) {
-        return _this.setState({ data: res.data, next: res.next });
+        return _this.setState({ data: res.data, next: res.next }, function () {
+          _this.props.updateConsumerState(_this.state.data);
+        });
       }).catch(_this.props.onError);
     }, _this.getResourcesCount = function () {
       _this.makeRequest().count().then(function (res) {
@@ -2833,12 +2835,13 @@ var Table = function (_Component) {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState(function (_ref5) {
           var data = _ref5.data;
-
           return {
             data: data.filter(function (item) {
               return !_this2.props.deletedItems.includes(item.id);
             })
           };
+        }, function () {
+          _this2.props.updateConsumerState(_this2.state.data);
         });
       }
     }
@@ -2886,6 +2889,8 @@ var Table = function (_Component) {
                   data: data.concat(res.data),
                   next: res.next ? res.next : null
                 };
+              }, function () {
+                _this3.props.updateConsumerState(_this3.state.data);
               });
             }).catch(_this3.props.onError);
           }
@@ -2905,6 +2910,7 @@ Table.propTypes = {
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
+  updateConsumerState: PropTypes.func,
   deletedItems: PropTypes.array
 };
 
@@ -2916,6 +2922,7 @@ Table.defaultProps = {
   useBarLoader: false,
   defaultPageSize: DEFAULT_PAGE_SIZE,
   onError: function onError() {},
+  updateConsumerState: function updateConsumerState() {},
   deletedItems: []
 };
 
