@@ -141,4 +141,14 @@ describe('Table', () => {
     expect(updateConsumerState).toHaveBeenCalledTimes(1)
     expect(consumerState).toHaveLength(6)
   })
+
+  test('delete items', async () => {
+    const wrapper = await mount(
+      <Table columns={columns} sdkInstance={sdk} dataType="branches" />
+    )
+    expect(wrapper.state('data')).toHaveLength(6)
+    wrapper.setProps({ deletedItems: ['1'] })
+    expect(wrapper.state('data')).toHaveLength(5)
+    expect(wrapper.state('data')[0].id).toBe('2')
+  })
 })
