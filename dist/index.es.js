@@ -2813,16 +2813,27 @@ var Table = function (_Component) {
         });
       }).catch(_this.props.onError);
     }, _this.getResourcesCount = function () {
-      _this.memoizedRequest().count && _this.memoizedRequest().count().then(function (res) {
-        return _this.setState(function (_ref2) {
-          var pageOptions = _ref2.pageOptions;
+      if (_this.memoizedRequest().count) {
+        _this.memoizedRequest().count().then(function (res) {
+          return _this.setState(function (_ref2) {
+            var pageOptions = _ref2.pageOptions;
+            return {
+              pageOptions: _extends$5({}, pageOptions, {
+                totalSize: res.data[0].count
+              })
+            };
+          });
+        }).catch(_this.props.onError);
+      } else {
+        _this.setState(function (_ref3) {
+          var pageOptions = _ref3.pageOptions;
           return {
             pageOptions: _extends$5({}, pageOptions, {
-              totalSize: res.data[0].count
+              totalSize: _this.state.data.length
             })
           };
         });
-      }).catch(_this.props.onError);
+      }
     }, _this.makeRequest = function () {
       var _this$props = _this.props,
           sdkInstance = _this$props.sdkInstance,
@@ -2830,15 +2841,15 @@ var Table = function (_Component) {
 
       return sdkInstance[dataType]();
     }, _this.memoizedRequest = index(_this.makeRequest), _this.handlePageChange = function (page) {
-      _this.setState(function (_ref3) {
-        var pageOptions = _ref3.pageOptions;
+      _this.setState(function (_ref4) {
+        var pageOptions = _ref4.pageOptions;
         return {
           pageOptions: _extends$5({}, pageOptions, { page: page })
         };
       });
     }, _this.handlePageSizeChange = function (pageSize) {
-      _this.setState(function (_ref4) {
-        var pageOptions = _ref4.pageOptions;
+      _this.setState(function (_ref5) {
+        var pageOptions = _ref5.pageOptions;
         return {
           pageOptions: _extends$5({}, pageOptions, { pageSize: pageSize })
         };
@@ -2870,8 +2881,8 @@ var Table = function (_Component) {
 
       if (prevProps.deletedItems.length !== this.props.deletedItems.length) {
         // eslint-disable-next-line react/no-did-update-set-state
-        this.setState(function (_ref5) {
-          var data = _ref5.data;
+        this.setState(function (_ref6) {
+          var data = _ref6.data;
           return {
             data: data.filter(function (item) {
               return !_this2.props.deletedItems.includes(item.id);
@@ -2920,8 +2931,8 @@ var Table = function (_Component) {
 
           if (requested >= loaded && _this3.state.next) {
             _this3.state.next.then(function (res) {
-              return _this3.setState(function (_ref6) {
-                var data = _ref6.data;
+              return _this3.setState(function (_ref7) {
+                var data = _ref7.data;
                 return {
                   data: data.concat(res.data),
                   next: res.next ? res.next : null
