@@ -2772,7 +2772,7 @@ var Table = function (_Component) {
         pageSize: _this.props.defaultPageSize,
         totalSize: null
       },
-      data: _this.props.data,
+      data: [],
       next: null
     }, _this.getResourcesData = function () {
       _this.makeRequest().getAll().then(function (res) {
@@ -2826,9 +2826,25 @@ var Table = function (_Component) {
   createClass(Table, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      if (!this.props.data) {
-        this.getResourcesData();
-        this.getResourcesCount();
+      this.getResourcesData();
+      this.getResourcesCount();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      var _this2 = this;
+
+      if (prevProps.deletedItems.length !== this.props.deletedItems.length) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState(function (_ref5) {
+          var data = _ref5.data;
+
+          return {
+            data: data.filter(function (item) {
+              return !_this2.props.deletedItems.includes(item.id);
+            })
+          };
+        });
       }
     }
 
@@ -2837,7 +2853,7 @@ var Table = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _props = this.props,
           propsData = _props.data,
@@ -2867,16 +2883,16 @@ var Table = function (_Component) {
           var loaded = cleanedData && cleanedData.length;
           var requested = (state.page + 1) * state.pageSize;
 
-          if (requested >= loaded && _this2.state.next) {
-            _this2.state.next.then(function (res) {
-              return _this2.setState(function (_ref5) {
-                var data = _ref5.data;
+          if (requested >= loaded && _this3.state.next) {
+            _this3.state.next.then(function (res) {
+              return _this3.setState(function (_ref6) {
+                var data = _ref6.data;
                 return {
                   data: data.concat(res.data),
                   next: res.next ? res.next : null
                 };
               });
-            }).catch(_this2.props.onError);
+            }).catch(_this3.props.onError);
           }
         }
       }, rest));
@@ -2893,7 +2909,8 @@ Table.propTypes = {
   dataType: PropTypes.string,
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
-  onError: PropTypes.func
+  onError: PropTypes.func,
+  deletedItems: PropTypes.array
 };
 
 Table.defaultProps = {
@@ -2903,7 +2920,8 @@ Table.defaultProps = {
   dataType: '',
   useBarLoader: false,
   defaultPageSize: DEFAULT_PAGE_SIZE,
-  onError: function onError() {}
+  onError: function onError() {},
+  deletedItems: []
 };
 
 module.exports = Table;
