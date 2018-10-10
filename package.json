@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/tillhub/react-table-wrapper.git"
   },
-  "main": "src/index.jsx",
+  "main": "dist/index.es.js",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
