@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactTable from 'react-table'
 import styled from 'styled-components'
+import memoizeOne from 'memoize-one'
 import 'react-table/react-table.css'
 
 const StyledTable = styled(ReactTable)`
@@ -41,7 +42,7 @@ class Table extends Component {
   }
 
   getResourcesData = () => {
-    this.makeRequest()
+    this.memoizedRequest()
       .getAll()
       .then(res =>
         this.setState({ data: res.data, next: res.next }, () => {
@@ -52,23 +53,26 @@ class Table extends Component {
   }
 
   getResourcesCount = () => {
-    this.makeRequest()
-      .count()
-      .then(res =>
-        this.setState(({ pageOptions }) => ({
-          pageOptions: {
-            ...pageOptions,
-            totalSize: res.data[0].count
-          }
-        }))
-      )
-      .catch(this.props.onError)
+    this.memoizedRequest().count &&
+      this.memoizedRequest()
+        .count()
+        .then(res =>
+          this.setState(({ pageOptions }) => ({
+            pageOptions: {
+              ...pageOptions,
+              totalSize: res.data[0].count
+            }
+          }))
+        )
+        .catch(this.props.onError)
   }
 
   makeRequest = () => {
     const { sdkInstance, dataType } = this.props
     return sdkInstance[dataType]()
   }
+
+  memoizedRequest = memoizeOne(this.makeRequest)
 
   handlePageChange = page => {
     this.setState(({ pageOptions }) => ({
