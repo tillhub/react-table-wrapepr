@@ -151,4 +151,22 @@ describe('Table', () => {
     expect(wrapper.state('data')).toHaveLength(5)
     expect(wrapper.state('data')[0].id).toBe('2')
   })
+
+  test('set the totalSize as items length if count method is not available', async () => {
+    const sdk = {
+      branches: () => ({
+        getAll: () =>
+          Promise.resolve({
+            data: [{}, {}, {}],
+            next: () => {}
+          })
+      })
+    }
+    const wrapper = await mount(
+      <Table columns={columns} sdkInstance={sdk} dataType="branches" />
+    )
+    wrapper.instance().getResourcesCount()
+    expect(wrapper.state('data')).toHaveLength(3)
+    expect(wrapper.state('pageOptions').totalSize).toBe(3)
+  })
 })

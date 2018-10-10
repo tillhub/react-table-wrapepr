@@ -53,7 +53,7 @@ class Table extends Component {
   }
 
   getResourcesCount = () => {
-    this.memoizedRequest().count &&
+    if (this.memoizedRequest().count) {
       this.memoizedRequest()
         .count()
         .then(res =>
@@ -65,6 +65,14 @@ class Table extends Component {
           }))
         )
         .catch(this.props.onError)
+    } else {
+      this.setState(({ pageOptions }) => ({
+        pageOptions: {
+          ...pageOptions,
+          totalSize: this.state.data.length
+        }
+      }))
+    }
   }
 
   makeRequest = () => {
