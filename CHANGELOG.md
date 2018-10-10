@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/tillhub/react-table-wrapper/compare/v1.2.1...v1.3.0) (2018-10-10)
+
+
+### Features
+
+* **api calls:** add memoize function to reduce api calls ([e2e9c8a](https://github.com/tillhub/react-table-wrapper/commit/e2e9c8a))
+
 ## [1.2.1](https://github.com/tillhub/react-table-wrapper/compare/v1.2.0...v1.2.1) (2018-10-10)
 
 

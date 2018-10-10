@@ -2634,6 +2634,43 @@ var ReactTable = function (_Methods) {
 ReactTable.propTypes = propTypes;
 ReactTable.defaultProps = defaultProps;
 
+var simpleIsEqual = function simpleIsEqual(a, b) {
+  return a === b;
+};
+
+function index (resultFn, isEqual) {
+  if (isEqual === void 0) {
+    isEqual = simpleIsEqual;
+  }
+
+  var lastThis;
+  var lastArgs = [];
+  var lastResult;
+  var calledOnce = false;
+
+  var isNewArgEqualToLast = function isNewArgEqualToLast(newArg, index) {
+    return isEqual(newArg, lastArgs[index]);
+  };
+
+  var result = function result() {
+    for (var _len = arguments.length, newArgs = new Array(_len), _key = 0; _key < _len; _key++) {
+      newArgs[_key] = arguments[_key];
+    }
+
+    if (calledOnce && lastThis === this && newArgs.length === lastArgs.length && newArgs.every(isNewArgEqualToLast)) {
+      return lastResult;
+    }
+
+    lastResult = resultFn.apply(this, newArgs);
+    calledOnce = true;
+    lastThis = this;
+    lastArgs = newArgs;
+    return lastResult;
+  };
+
+  return result;
+}
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -2775,13 +2812,13 @@ var Table = function (_Component) {
       data: [],
       next: null
     }, _this.getResourcesData = function () {
-      _this.makeRequest().getAll().then(function (res) {
+      _this.memoizedRequest().getAll().then(function (res) {
         return _this.setState({ data: res.data, next: res.next }, function () {
           _this.props.updateConsumerState(_this.state.data);
         });
       }).catch(_this.props.onError);
     }, _this.getResourcesCount = function () {
-      _this.makeRequest().count().then(function (res) {
+      _this.memoizedRequest().count && _this.memoizedRequest().count().then(function (res) {
         return _this.setState(function (_ref2) {
           var pageOptions = _ref2.pageOptions;
           return {
@@ -2797,7 +2834,7 @@ var Table = function (_Component) {
           dataType = _this$props.dataType;
 
       return sdkInstance[dataType]();
-    }, _this.handlePageChange = function (page) {
+    }, _this.memoizedRequest = index(_this.makeRequest), _this.handlePageChange = function (page) {
       _this.setState(function (_ref3) {
         var pageOptions = _ref3.pageOptions;
         return {
