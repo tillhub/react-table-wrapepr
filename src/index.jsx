@@ -29,18 +29,25 @@ class Table extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.deletedItems.length !== this.props.deletedItems.length) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState(({ data }) => {
-        return {
+      this.setState(
+        ({ data }) => ({
           data: data.filter(item => !this.props.deletedItems.includes(item.id))
+        }),
+        () => {
+          this.props.updateConsumerState(this.state.data)
         }
-      })
+      )
     }
   }
 
   getResourcesData = () => {
     this.makeRequest()
       .getAll()
-      .then(res => this.setState({ data: res.data, next: res.next }))
+      .then(res =>
+        this.setState({ data: res.data, next: res.next }, () => {
+          this.props.updateConsumerState(this.state.data)
+        })
+      )
       .catch(this.props.onError)
   }
 
@@ -112,10 +119,15 @@ class Table extends Component {
           if (requested >= loaded && this.state.next) {
             this.state.next
               .then(res =>
-                this.setState(({ data }) => ({
-                  data: data.concat(res.data),
-                  next: res.next ? res.next : null
-                }))
+                this.setState(
+                  ({ data }) => ({
+                    data: data.concat(res.data),
+                    next: res.next ? res.next : null
+                  }),
+                  () => {
+                    this.props.updateConsumerState(this.state.data)
+                  }
+                )
               )
               .catch(this.props.onError)
           }
@@ -135,6 +147,7 @@ Table.propTypes = {
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
+  updateConsumerState: PropTypes.func,
   deletedItems: PropTypes.array
 }
 
@@ -146,6 +159,7 @@ Table.defaultProps = {
   useBarLoader: false,
   defaultPageSize: DEFAULT_PAGE_SIZE,
   onError: () => {},
+  updateConsumerState: () => {},
   deletedItems: []
 }
 

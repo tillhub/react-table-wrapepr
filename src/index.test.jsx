@@ -1,7 +1,5 @@
 import React from 'react'
-import { render, waitForElement } from 'react-testing-library'
-import { mount } from 'enzyme'
-import toJson from 'enzyme-to-json'
+import { shallow, mount } from 'enzyme'
 import Table from './'
 
 const companyName = 'Stark Inc.'
@@ -104,10 +102,9 @@ const columns = [
 
 describe('Table', () => {
   test('render with data', async () => {
-    const wrapper = mount(
+    const wrapper = await mount(
       <Table columns={columns} sdkInstance={sdk} dataType="branches" />
     )
-    await wrapper.instance().componentDidMount()
     expect(wrapper.state('data')).toHaveLength(6)
     expect(wrapper.state('data')[0]).toMatchObject({
       name: companyName,
@@ -119,13 +116,29 @@ describe('Table', () => {
   })
 
   test('delete items', async () => {
-    const wrapper = mount(
+    const wrapper = await mount(
       <Table columns={columns} sdkInstance={sdk} dataType="branches" />
     )
-    await wrapper.instance().componentDidMount()
     expect(wrapper.state('data')).toHaveLength(6)
     wrapper.setProps({ deletedItems: ['1'] })
     expect(wrapper.state('data')).toHaveLength(5)
     expect(wrapper.state('data')[0].id).toBe('2')
+  })
+
+  test('updateConsumerState', async () => {
+    let consumerState = []
+    const updateConsumerState = jest.fn(data => {
+      consumerState = consumerState.concat(data)
+    })
+    await shallow(
+      <Table
+        columns={columns}
+        sdkInstance={sdk}
+        dataType="branches"
+        updateConsumerState={updateConsumerState}
+      />
+    )
+    expect(updateConsumerState).toHaveBeenCalledTimes(1)
+    expect(consumerState).toHaveLength(6)
   })
 })
