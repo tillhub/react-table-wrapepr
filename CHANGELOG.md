@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/tillhub/react-table-wrapper/compare/v1.3.2...v1.3.3) (2018-10-11)
+
+
+### Bug Fixes
+
+* **sdk handlers:** add optional alternative handler names in props ([b13eba2](https://github.com/tillhub/react-table-wrapper/commit/b13eba2))
+
 ## [1.3.2](https://github.com/tillhub/react-table-wrapper/compare/v1.3.1...v1.3.2) (2018-10-11)
 
 

@@ -2808,18 +2808,23 @@ var Table = function (_Component) {
       next: null,
       isPending: false
     }, _this.getResourcesData = function () {
+      var _this$props = _this.props,
+          getAllFn = _this$props.getAllFn,
+          onError = _this$props.onError,
+          updateConsumerState = _this$props.updateConsumerState;
+
       _this.setState({ isPending: true });
-      _this.memoizedRequest().getAll().then(function (res) {
+      _this.memoizedRequest()[getAllFn]().then(function (res) {
         return _this.setState({ data: res.data, next: res.next, isPending: false }, function () {
-          _this.props.updateConsumerState(_this.state.data);
+          updateConsumerState(_this.state.data);
         });
       }).catch(function (err) {
-        _this.props.onError(err);
+        onError(err);
         _this.setState({ isPending: false });
       });
     }, _this.getResourcesCount = function () {
-      if (_this.memoizedRequest().count) {
-        _this.memoizedRequest().count().then(function (res) {
+      if (_this.memoizedRequest()[_this.props.countFn]) {
+        _this.memoizedRequest()[_this.props.countFn]().then(function (res) {
           return _this.setState(function (_ref2) {
             var pageOptions = _ref2.pageOptions;
             return {
@@ -2840,9 +2845,9 @@ var Table = function (_Component) {
         });
       }
     }, _this.makeRequest = function () {
-      var _this$props = _this.props,
-          sdkInstance = _this$props.sdkInstance,
-          dataType = _this$props.dataType;
+      var _this$props2 = _this.props,
+          sdkInstance = _this$props2.sdkInstance,
+          dataType = _this$props2.dataType;
 
       return sdkInstance[dataType]();
     }, _this.memoizedRequest = index(_this.makeRequest), _this.handlePageChange = function (page) {
@@ -2974,7 +2979,9 @@ Table.propTypes = {
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
   updateConsumerState: PropTypes.func,
-  deletedItems: PropTypes.array
+  deletedItems: PropTypes.array,
+  getAllFn: PropTypes.string,
+  countFn: PropTypes.string
 };
 
 Table.defaultProps = {
@@ -2987,7 +2994,9 @@ Table.defaultProps = {
   onError: function onError() {},
   updateConsumerState: function updateConsumerState() {},
   deletedItems: [],
-  pendingMessage: 'Loading'
+  pendingMessage: 'Loading',
+  getAllFn: 'getAll',
+  countFn: 'count'
 };
 
 export default Table;
