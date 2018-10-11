@@ -158,12 +158,44 @@ describe('Table', () => {
         getAll: () =>
           Promise.resolve({
             data: [{}, {}, {}],
-            next: () => {}
+            next: () => { }
           })
       })
     }
     const wrapper = await mount(
       <Table columns={columns} sdkInstance={sdk} dataType="branches" />
+    )
+    wrapper.instance().getResourcesCount()
+    expect(wrapper.state('data')).toHaveLength(3)
+    expect(wrapper.state('pageOptions').totalSize).toBe(3)
+  })
+
+  test('works with alternative getAll and count API handler names', async () => {
+    const sdk = {
+      branches: () => ({
+        getAllTheStuff: () =>
+          Promise.resolve({
+            data: [{}, {}, {}],
+            next: () => { }
+          }),
+        countTheStuff: () =>
+          Promise.resolve({
+            data: [
+              {
+                count: 3
+              }
+            ]
+          })
+      })
+    }
+    const wrapper = await mount(
+      <Table
+        columns={columns}
+        sdkInstance={sdk}
+        dataType="branches"
+        getAllFn="getAllTheStuff"
+        countFn="countTheStuff"
+      />
     )
     wrapper.instance().getResourcesCount()
     expect(wrapper.state('data')).toHaveLength(3)

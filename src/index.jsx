@@ -43,27 +43,28 @@ class Table extends Component {
   }
 
   getResourcesData = () => {
+    const { getAllFn, onError, updateConsumerState } = this.props
     this.setState({ isPending: true })
     this.memoizedRequest()
-      .getAll()
+      [getAllFn]()
       .then(res =>
         this.setState(
           { data: res.data, next: res.next, isPending: false },
           () => {
-            this.props.updateConsumerState(this.state.data)
+            updateConsumerState(this.state.data)
           }
         )
       )
       .catch(err => {
-        this.props.onError(err)
+        onError(err)
         this.setState({ isPending: false })
       })
   }
 
   getResourcesCount = () => {
-    if (this.memoizedRequest().count) {
+    if (this.memoizedRequest()[this.props.countFn]) {
       this.memoizedRequest()
-        .count()
+        [this.props.countFn]()
         .then(res =>
           this.setState(({ pageOptions }) => ({
             pageOptions: {
@@ -177,7 +178,9 @@ Table.propTypes = {
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
   updateConsumerState: PropTypes.func,
-  deletedItems: PropTypes.array
+  deletedItems: PropTypes.array,
+  getAllFn: PropTypes.string,
+  countFn: PropTypes.string
 }
 
 Table.defaultProps = {
@@ -190,7 +193,9 @@ Table.defaultProps = {
   onError: () => {},
   updateConsumerState: () => {},
   deletedItems: [],
-  pendingMessage: 'Loading'
+  pendingMessage: 'Loading',
+  getAllFn: 'getAll',
+  countFn: 'count'
 }
 
 export default Table
