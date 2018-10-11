@@ -2810,13 +2810,18 @@ var Table = function (_Component) {
         totalSize: null
       },
       data: [],
-      next: null
+      next: null,
+      isPending: false
     }, _this.getResourcesData = function () {
+      _this.setState({ isPending: true });
       _this.memoizedRequest().getAll().then(function (res) {
-        return _this.setState({ data: res.data, next: res.next }, function () {
+        return _this.setState({ data: res.data, next: res.next, isPending: false }, function () {
           _this.props.updateConsumerState(_this.state.data);
         });
-      }).catch(_this.props.onError);
+      }).catch(function (err) {
+        _this.props.onError(err);
+        _this.setState({ isPending: false });
+      });
     }, _this.getResourcesCount = function () {
       if (_this.memoizedRequest().count) {
         _this.memoizedRequest().count().then(function (res) {
@@ -2870,6 +2875,28 @@ var Table = function (_Component) {
       // defaults to 1000 pages if cannot fetch counts from API
 
       return Math.ceil((totalSize || pageSize) / pageSize) || 1000;
+    }, _this.pagination = function (state, data) {
+      var loaded = data && data.length;
+      var requested = (state.page + 1) * state.pageSize;
+
+      if (requested >= loaded && _this.state.next) {
+        _this.setState({ isPending: true });
+        _this.state.next.then(function (res) {
+          return _this.setState(function (_ref6) {
+            var data = _ref6.data;
+            return {
+              data: data.concat(res.data),
+              next: res.next ? res.next : null,
+              isPending: false
+            };
+          }, function () {
+            _this.props.updateConsumerState(_this.state.data);
+          });
+        }).catch(function (err) {
+          _this.props.onError(err);
+          _this.setState({ isPending: false });
+        });
+      }
     }, _temp), possibleConstructorReturn(_this, _ret);
   }
 
@@ -2886,8 +2913,8 @@ var Table = function (_Component) {
 
       if (prevProps.deletedItems.length !== this.props.deletedItems.length) {
         // eslint-disable-next-line react/no-did-update-set-state
-        this.setState(function (_ref6) {
-          var data = _ref6.data;
+        this.setState(function (_ref7) {
+          var data = _ref7.data;
           return {
             data: data.filter(function (item) {
               return !_this2.props.deletedItems.includes(item.id);
@@ -2909,10 +2936,12 @@ var Table = function (_Component) {
       var _props = this.props,
           propsData = _props.data,
           columns = _props.columns,
-          rest = objectWithoutProperties(_props, ['data', 'columns']); // eslint-disable-line no-unused-vars
+          pendingMessage = _props.pendingMessage,
+          rest = objectWithoutProperties(_props, ['data', 'columns', 'pendingMessage']); // eslint-disable-line no-unused-vars
 
       var _state = this.state,
           localData = _state.data,
+          isPending = _state.isPending,
           _state$pageOptions = _state.pageOptions,
           page = _state$pageOptions.page,
           pageSize = _state$pageOptions.pageSize;
@@ -2926,27 +2955,12 @@ var Table = function (_Component) {
         page: page,
         pageSize: pageSize,
         className: '-striped -highlight',
-        noDataText: 'No data',
+        noDataText: isPending ? pendingMessage : 'No data',
         pages: this.calcTotalPageSize(),
         onPageChange: this.handlePageChange,
         onPageSizeChange: this.handlePageSizeChange,
         onFetchData: function onFetchData(state) {
-          var loaded = cleanedData && cleanedData.length;
-          var requested = (state.page + 1) * state.pageSize;
-
-          if (requested >= loaded && _this3.state.next) {
-            _this3.state.next.then(function (res) {
-              return _this3.setState(function (_ref7) {
-                var data = _ref7.data;
-                return {
-                  data: data.concat(res.data),
-                  next: res.next ? res.next : null
-                };
-              }, function () {
-                _this3.props.updateConsumerState(_this3.state.data);
-              });
-            }).catch(_this3.props.onError);
-          }
+          return _this3.pagination(state, cleanedData);
         }
       }, rest));
     }
@@ -2960,6 +2974,7 @@ Table.propTypes = {
   columns: PropTypes.array.isRequired,
   sdkInstance: PropTypes.object,
   dataType: PropTypes.string,
+  pendingMessage: PropTypes.string,
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
@@ -2976,7 +2991,8 @@ Table.defaultProps = {
   defaultPageSize: DEFAULT_PAGE_SIZE,
   onError: function onError() {},
   updateConsumerState: function updateConsumerState() {},
-  deletedItems: []
+  deletedItems: [],
+  pendingMessage: 'Loading'
 };
 
 module.exports = Table;

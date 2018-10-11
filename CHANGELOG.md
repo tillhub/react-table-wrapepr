@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/tillhub/react-table-wrapper/compare/v1.3.1...v1.3.2) (2018-10-11)
+
+
+### Bug Fixes
+
+* **loading data:** add panding messgae during fetching ([348c5c3](https://github.com/tillhub/react-table-wrapper/commit/348c5c3))
+
 ## [1.3.1](https://github.com/tillhub/react-table-wrapper/compare/v1.3.0...v1.3.1) (2018-10-10)
 
 
