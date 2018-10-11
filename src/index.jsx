@@ -19,7 +19,8 @@ class Table extends Component {
       totalSize: null
     },
     data: [],
-    next: null
+    next: null,
+    isPending: false
   }
 
   componentDidMount() {
@@ -42,14 +43,21 @@ class Table extends Component {
   }
 
   getResourcesData = () => {
+    this.setState({ isPending: true })
     this.memoizedRequest()
       .getAll()
       .then(res =>
-        this.setState({ data: res.data, next: res.next }, () => {
-          this.props.updateConsumerState(this.state.data)
-        })
+        this.setState(
+          { data: res.data, next: res.next, isPending: false },
+          () => {
+            this.props.updateConsumerState(this.state.data)
+          }
+        )
       )
-      .catch(this.props.onError)
+      .catch(err => {
+        this.props.onError(err)
+        this.setState({ isPending: false })
+      })
   }
 
   getResourcesCount = () => {
@@ -104,10 +112,37 @@ class Table extends Component {
     return Math.ceil((totalSize || pageSize) / pageSize) || 1000
   }
 
+  pagination = (state, data) => {
+    const loaded = data && data.length
+    const requested = (state.page + 1) * state.pageSize
+
+    if (requested >= loaded && this.state.next) {
+      this.setState({ isPending: true })
+      this.state.next
+        .then(res =>
+          this.setState(
+            ({ data }) => ({
+              data: data.concat(res.data),
+              next: res.next ? res.next : null,
+              isPending: false
+            }),
+            () => {
+              this.props.updateConsumerState(this.state.data)
+            }
+          )
+        )
+        .catch(err => {
+          this.props.onError(err)
+          this.setState({ isPending: false })
+        })
+    }
+  }
+
   render() {
-    const { data: propsData, columns, ...rest } = this.props // eslint-disable-line no-unused-vars
+    const { data: propsData, columns, pendingMessage, ...rest } = this.props // eslint-disable-line no-unused-vars
     const {
       data: localData,
+      isPending,
       pageOptions: { page, pageSize }
     } = this.state
 
@@ -120,30 +155,11 @@ class Table extends Component {
         page={page}
         pageSize={pageSize}
         className="-striped -highlight"
-        noDataText="No data"
+        noDataText={isPending ? pendingMessage : 'No data'}
         pages={this.calcTotalPageSize()}
         onPageChange={this.handlePageChange}
         onPageSizeChange={this.handlePageSizeChange}
-        onFetchData={state => {
-          const loaded = cleanedData && cleanedData.length
-          const requested = (state.page + 1) * state.pageSize
-
-          if (requested >= loaded && this.state.next) {
-            this.state.next
-              .then(res =>
-                this.setState(
-                  ({ data }) => ({
-                    data: data.concat(res.data),
-                    next: res.next ? res.next : null
-                  }),
-                  () => {
-                    this.props.updateConsumerState(this.state.data)
-                  }
-                )
-              )
-              .catch(this.props.onError)
-          }
-        }}
+        onFetchData={state => this.pagination(state, cleanedData)}
         {...rest}
       />
     )
@@ -156,6 +172,7 @@ Table.propTypes = {
   columns: PropTypes.array.isRequired,
   sdkInstance: PropTypes.object,
   dataType: PropTypes.string,
+  pendingMessage: PropTypes.string,
   useBarLoader: PropTypes.bool,
   defaultPageSize: PropTypes.number,
   onError: PropTypes.func,
@@ -172,7 +189,8 @@ Table.defaultProps = {
   defaultPageSize: DEFAULT_PAGE_SIZE,
   onError: () => {},
   updateConsumerState: () => {},
-  deletedItems: []
+  deletedItems: [],
+  pendingMessage: 'Loading'
 }
 
 export default Table
