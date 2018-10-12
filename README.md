@@ -12,27 +12,12 @@
 npm install @tillhub/react-table-wrapper
 ```
 
-### Properties
-
-| Property            | type     | required | default   | description                                                                                                                                                                                                                                      |
-| ------------------- | -------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| sdkInstance         | object   | yes      | -         | An SDK instance or API source in the form of an object. Will be used for data fetching that will later on be passed as the data array for the table.                                                                                             |
-| dataType            | string   | yes      | -         | The the name of the resource that will get called on the `sdkInstance`.                                                                                                                                                                          |
-| columns             | array    | yes      | -         | Array of objects that includes Header, accessor and Cell keys to organize the fetched data in the table. See `react-table` docs for more descriptive explanation of the columns array prop.                                                      |
-| pendingMessage      | string   | no       | 'Loading' | The message the table should display before the data is being displayed in the table.                                                                                                                                                            |
-| useBarLoader        | boolean  | no       | false     | Should `react-table-wrapper` display a linear bar loader at the top of the component container while the component is being mounted.                                                                                                             |
-| onError             | function | no       | () => {}  | A function to run when encountering with error on data fetching.                                                                                                                                                                                 |
-| updateConsumerState | function | no       | () => {}  | If the component that is using `react-table-wrapper` needs to know about the fetched data, updateConsumerState should provide a way to to do so in the form of a function. This function will be invoked after fetching the data with this data. |
-| deletedItems        | array    | no       | []        | Array of ids that were deleted from the DB while the table was rendered. `react-table-wrapper` will filtered the items from the data that was fetched and was rendered.                                                                          |
-| getAllFn            | string   | no       | 'getAll'  | An alternative name for the getAll function provided by the SDK resource object                                                                                                                                                                  |
-| countFn             | string   | no       | 'count'   | An alternative name for the count function provided by the SDK resource object                                                                                                                                                                   |
-
-### Usage
+### Usage example
 ```jsx
 import React, { Component } from 'react'
 import Table from '@tillhub/react-table-wrapper'
 
-class Table extends Component {
+class Example extends Component {
   state = {
     data: {}
     deletedItems: []
@@ -48,7 +33,7 @@ class Table extends Component {
 
   render() {
     return (
-      <TillhubTable
+      <Table
         sdkInstance={th}
         dataType="branches"
         onError={dispatchError}
@@ -69,6 +54,21 @@ class Table extends Component {
   }
 }
 ```
+
+### Properties
+
+| Property            | type     | required | default   | description                                                                                                                                                                                                                                      |
+| ------------------- | -------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| sdkInstance         | object   | yes      | -         | An SDK instance or API source in the form of an object. Will be used for data fetching that will later on be passed as the data array for the table.                                                                                             |
+| dataType            | string   | yes      | -         | The the name of the resource that will get called on the `sdkInstance`.                                                                                                                                                                          |
+| columns             | array    | yes      | -         | Array of objects that includes Header, accessor and Cell keys to organize the fetched data in the table. See `react-table` docs for more descriptive explanation of the columns array prop.                                                      |
+| pendingMessage      | string   | no       | 'Loading' | The message the table should display before the data is being displayed in the table.                                                                                                                                                            |
+| useBarLoader        | boolean  | no       | false     | Should `react-table-wrapper` display a linear bar loader at the top of the component container while the component is being mounted.                                                                                                             |
+| onError             | function | no       | () => {}  | A function to run when encountering with error on data fetching.                                                                                                                                                                                 |
+| updateConsumerState | function | no       | () => {}  | If the component that is using `react-table-wrapper` needs to know about the fetched data, updateConsumerState should provide a way to to do so in the form of a function. This function will be invoked after fetching the data with this data. |
+| deletedItems        | array    | no       | []        | Array of ids that were deleted from the DB while the table was rendered. `react-table-wrapper` will filtered the items from the data that was fetched and was rendered.                                                                          |
+| getAllFn            | string   | no       | 'getAll'  | An alternative name for the getAll function provided by the SDK resource object                                                                                                                                                                  |
+| countFn             | string   | no       | 'count'   | An alternative name for the count function provided by the SDK resource object                                                                                                                                                                   |
 
 ### The SDK instance required shape
 
