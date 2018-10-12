@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/tillhub/react-table-wrapper/compare/v1.3.3...v1.3.4) (2018-10-12)
+
+
+### Bug Fixes
+
+* **table prop type:** make some props as required ([c2a768d](https://github.com/tillhub/react-table-wrapper/commit/c2a768d))
+
 ## [1.3.3](https://github.com/tillhub/react-table-wrapper/compare/v1.3.2...v1.3.3) (2018-10-11)
 
 
